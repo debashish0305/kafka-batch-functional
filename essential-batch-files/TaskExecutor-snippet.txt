@@ -1,0 +1,5 @@
+@Bean
+public TaskExecutor taskExecutor() {
+    Executor vThreads = Executors.newVirtualThreadPerTaskExecutor();
+    return task -> vThreads.execute(task);
+}
