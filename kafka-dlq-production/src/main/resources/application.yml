@@ -1,0 +1,44 @@
+spring:
+  cloud:
+    function:
+      definition: myConsumer;myDlqConsumer
+    stream:
+      default:
+        contentType: application/json
+      bindings:
+        myConsumer:
+          destination: my-topic
+          group: my-group
+        myProducer:
+          destination: my-topic
+        myDlqConsumer:
+          destination: my-dlq-topic
+          group: my-dlq-group
+      kafka:
+        bindings:
+          myConsumer:
+            consumer:
+              batch-mode: false
+              max-poll-records: 1
+              enable-dlq: true
+              dlq-name: my-dlq-topic
+              autoCommitOnError: false
+              ack-mode: RECORD
+          myDlqConsumer:
+            consumer:
+              batch-mode: false
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+
+logging:
+  level:
+    org.springframework.cloud.stream: INFO
+    org.apache.kafka: INFO
