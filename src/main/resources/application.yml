@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        input-in-0:
+          destination: my-topic
+          group: my-group
+          consumer:
+            batch-mode: true
+            max-poll-records: 100
+        output-out-0:
+          destination: my-topic
+
+logging:
+  level:
+    org.apache.kafka: INFO
+    org.springframework.cloud.stream: DEBUG
